@@ -1,14 +1,14 @@
-import React, {Fragment} from "react";
+import React from "react";
 import { connect } from "react-redux";
 import ContactItem from './ContactItem'
 
 const Contacts = ({ contacts }) => {
   return (
-    <Fragment>
+    <div style={{overflowY: 'auto', height: '80vh'}}>
       {contacts.map(contact => {
         return <ContactItem contact={contact} key={contact.id} />;
       })}
-    </Fragment>
+    </div>
   );
 };
 

@@ -1,7 +1,15 @@
 import React from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { deleteContact } from "../redux/actions";
 
-const ContactItem = ({ contact }) => {
-  const { name, email, phone, type } = contact;
+const ContactItem = ({ contact, deleteContact }) => {
+  const { id, name, email, phone, type } = contact;
+
+  const onDelete = () => {
+    deleteContact(id);
+  };
+
   return (
     <div className="card bg-light">
       <h3 className="text-primary text-left">
@@ -28,10 +36,8 @@ const ContactItem = ({ contact }) => {
         )}
       </ul>
       <p>
-        <button className='btn btn-dark btn-sm'>
-          Edit
-        </button>
-        <button className="btn btn-danger btn-sm">
+        <button className="btn btn-dark btn-sm">Edit</button>
+        <button className="btn btn-danger btn-sm" onClick={onDelete}>
           Delete
         </button>
       </p>
@@ -39,4 +45,7 @@ const ContactItem = ({ contact }) => {
   );
 };
 
-export default ContactItem;
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ deleteContact }, dispatch);
+
+export default connect(null, mapDispatchToProps)(ContactItem);
