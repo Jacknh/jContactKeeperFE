@@ -1,5 +1,5 @@
 import {v4 as uuidv4} from 'uuid'
-import { SET_CONTACTS, ADD_CONTACT, DELETE_CONTACT } from "../actionTypes";
+import { SET_CONTACTS, ADD_CONTACT, DELETE_CONTACT, SET_CURRENT, UPDATE_CONTACT } from "../actionTypes";
 
 const initialState = {
   contacts: [
@@ -24,7 +24,8 @@ const initialState = {
       phone: "094-234-2334",
       type: "professional"
     }
-  ]
+  ],
+  current: null
 };
 
 export default function(state = initialState, action) {
@@ -48,6 +49,18 @@ export default function(state = initialState, action) {
       return {
         ...state,
         contacts: state.contacts.filter(contact => contact.id !== action.payload)
+      }
+
+    case SET_CURRENT: 
+      return {
+        ...state,
+        current: action.payload
+      }
+
+    case UPDATE_CONTACT:
+      return {
+        ...state,
+        contacts: state.contacts.map(contact => contact.id === action.payload.id ? action.payload : contact)
       }
 
     default:

@@ -1,12 +1,20 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { deleteContact } from "../redux/actions";
+import { deleteContact, setCurrent } from "../redux/actions";
 
-const ContactItem = ({ contact, deleteContact }) => {
+const ContactItem = ({ contact, deleteContact, current, setCurrent }) => {
   const { id, name, email, phone, type } = contact;
 
+  const onEdit = () => {
+    setCurrent(id);
+  };
+
   const onDelete = () => {
+    if (current === id) {
+      alert('The current contact is being edited, you can not delete it now!');
+      return;
+    }
     deleteContact(id);
   };
 
@@ -36,7 +44,9 @@ const ContactItem = ({ contact, deleteContact }) => {
         )}
       </ul>
       <p>
-        <button className="btn btn-dark btn-sm">Edit</button>
+        <button className="btn btn-dark btn-sm" onClick={onEdit}>
+          Edit
+        </button>
         <button className="btn btn-danger btn-sm" onClick={onDelete}>
           Delete
         </button>
@@ -45,7 +55,13 @@ const ContactItem = ({ contact, deleteContact }) => {
   );
 };
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators({ deleteContact }, dispatch);
+const mapStateToProps = state => {
+  return {
+    current: state.contacts.current
+  }
+}
 
-export default connect(null, mapDispatchToProps)(ContactItem);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ deleteContact, setCurrent }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactItem);
