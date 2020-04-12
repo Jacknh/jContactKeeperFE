@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { register } from "../redux/actions";
 
-const Register = () => {
+const Register = ({ register }) => {
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -10,7 +13,8 @@ const Register = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(user)
+    const { name, email, password } = user;
+    register({ name, email, password });
   };
 
   const onChange = (e) => {
@@ -56,6 +60,7 @@ const Register = () => {
             value={password}
             onChange={onChange}
             required
+            minLength="6"
           />
         </div>
         <div className="form-group">
@@ -67,6 +72,7 @@ const Register = () => {
             value={password2}
             onChange={onChange}
             required
+            minLength="6"
           />
         </div>
         <input
@@ -79,4 +85,7 @@ const Register = () => {
   );
 };
 
-export default Register;
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators({ register }, dispatch);
+
+export default connect(null, mapDispatchToProps)(Register);

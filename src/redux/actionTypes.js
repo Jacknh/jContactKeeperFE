@@ -9,3 +9,9 @@ export const SET_CURRENT = 'SET_CURRENT';
 export const UPDATE_CONTACT = 'UPDATE_CONTACT';
 
 export const SET_FILTER = 'SET_FILTER';
+
+export const SET_TOKEN = 'SET_TOKEN';
+
+export const ADD_NOTIFICATION = 'ADD_NOTIFICATION';
+
+export const DELETE_NOTIFICATION = 'DELETE_NOTIFICATION';
