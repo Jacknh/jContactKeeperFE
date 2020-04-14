@@ -1,7 +1,8 @@
-import {SET_TOKEN} from '../actionTypes'
+import {SET_TOKEN, SET_USER} from '../actionTypes'
 
 const initialState = {
-  token: null
+  token: null,
+  user: {}
 }
 
 export default function(state = initialState, action) {
@@ -11,7 +12,11 @@ export default function(state = initialState, action) {
         ...state,
         token: action.payload
       }
-
+    case SET_USER:
+      return {
+        ...state,
+        user: action.payload
+      }
     default:
       return state;
   }

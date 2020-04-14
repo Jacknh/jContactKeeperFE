@@ -6,6 +6,7 @@ import {
   UPDATE_CONTACT,
   SET_FILTER,
   SET_TOKEN,
+  SET_USER,
   ADD_NOTIFICATION,
   DELETE_NOTIFICATION,
 } from "./actionTypes";
@@ -23,12 +24,18 @@ export const setFilter = (payload) => ({ type: SET_FILTER, payload });
 
 export const setToken = (payload) => ({ type: SET_TOKEN, payload });
 
+export const setUser = (payload) => ({ type: SET_USER, payload });
+
 export const setNotification = ({ msg, type }) => (dispatch) => {
   const id = uuidv4();
   dispatch({ type: ADD_NOTIFICATION, payload: { msg, type, id } });
-  setTimeout(() => {
-    dispatch({ type: DELETE_NOTIFICATION, payload: id });
-  }, 3000);
+
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      dispatch({ type: DELETE_NOTIFICATION, payload: id });
+      resolve(true);
+    }, 3000);
+  });
 };
 
 export const register = (payload) => (dispatch) =>
@@ -36,9 +43,22 @@ export const register = (payload) => (dispatch) =>
     .register(payload)
     .then(({ data }) => {
       dispatch(setToken(data.token));
-      dispatch(setNotification({ msg: "Register succeeded", type: "success" }));
+      localStorage.setItem("token", data.token);
+      return Promise.resolve(true);
     })
     .catch((err) => {
       dispatch(setToken(null));
-      dispatch(setNotification({ msg: "Register failed", type: "danger" }));
+      localStorage.removeItem("token");
+      return Promise.reject(false);
+    });
+
+export const getMe = () => (dispatch) =>
+  authService
+    .getMe()
+    .then(({data}) => {
+      dispatch(setUser(data.user));
+    })
+    .catch((error) => {
+      console.log(error.response);
+      dispatch(setUser(null));
     });

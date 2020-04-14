@@ -1,9 +1,12 @@
 import React, { useState } from "react";
+import {useHistory} from 'react-router-dom'
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { register } from "../redux/actions";
+import { register, setNotification } from "../redux/actions";
 
-const Register = ({ register }) => {
+const Register = ({ register, setNotification }) => {
+  let history = useHistory();
+
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -11,10 +14,16 @@ const Register = ({ register }) => {
     password2: "",
   });
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     const { name, email, password } = user;
-    register({ name, email, password });
+    try {
+      await register({ name, email, password });
+      await setNotification({ msg: "Register succeeded! Automatically go to home page in a second...", type: "success" });
+      history.push('/');
+    } catch (error) {
+      setNotification({ msg: "Register failed", type: "danger" });
+    }
   };
 
   const onChange = (e) => {
@@ -86,6 +95,6 @@ const Register = ({ register }) => {
 };
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ register }, dispatch);
+  bindActionCreators({ register, setNotification }, dispatch);
 
 export default connect(null, mapDispatchToProps)(Register);

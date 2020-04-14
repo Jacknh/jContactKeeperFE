@@ -12,6 +12,8 @@ export const SET_FILTER = 'SET_FILTER';
 
 export const SET_TOKEN = 'SET_TOKEN';
 
+export const SET_USER = 'SET_USER';
+
 export const ADD_NOTIFICATION = 'ADD_NOTIFICATION';
 
 export const DELETE_NOTIFICATION = 'DELETE_NOTIFICATION';
