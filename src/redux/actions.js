@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import {
+  SET_CONTACTS,
   ADD_CONTACT,
   DELETE_CONTACT,
   SET_CURRENT,
@@ -9,16 +10,34 @@ import {
   SET_USER,
   ADD_NOTIFICATION,
   DELETE_NOTIFICATION,
+  SET_LOADING
 } from "./actionTypes";
 import * as authService from "../services/auth";
+import * as contactService from "../services/contacts";
 
-export const addContact = (payload) => ({ type: ADD_CONTACT, payload });
+export const addContact = (payload) => (dispatch) =>
+  contactService.addContact(payload).then(({ data }) => {
+    dispatch({ type: ADD_CONTACT, payload: data.data });
+  });
 
-export const deleteContact = (payload) => ({ type: DELETE_CONTACT, payload });
+export const getContacts = (payload) => (dispatch) => {
+  contactService.getContacts(payload).then(({ data }) => {
+    dispatch({ type: SET_CONTACTS, payload: data.data });
+    dispatch({ type: SET_LOADING, payload: false });
+  });
+}
+
+export const deleteContact = (payload) => (dispatch) =>
+  contactService.deleteContact(payload).then(() => {
+    dispatch({ type: DELETE_CONTACT, payload });
+  });
 
 export const setCurrent = (payload) => ({ type: SET_CURRENT, payload });
 
-export const updateContact = (payload) => ({ type: UPDATE_CONTACT, payload });
+export const updateContact = (id, payload) => (dispatch) =>
+  contactService.updateContact(id, payload).then(({ data }) => {
+    dispatch({ type: UPDATE_CONTACT, payload: data.data });
+  });
 
 export const setFilter = (payload) => ({ type: SET_FILTER, payload });
 
@@ -86,5 +105,7 @@ export const getMe = () => (dispatch) =>
 export const logout = () => (dispatch) => {
   dispatch(setToken(null));
   dispatch(setUser(null));
+  dispatch({ type: SET_CONTACTS, payload: [] });
+  dispatch({ type: SET_LOADING, payload: true });
   localStorage.removeItem("token");
 };

@@ -17,3 +17,5 @@ export const SET_USER = 'SET_USER';
 export const ADD_NOTIFICATION = 'ADD_NOTIFICATION';
 
 export const DELETE_NOTIFICATION = 'DELETE_NOTIFICATION';
+
+export const SET_LOADING = 'SET_LOADING';

@@ -4,18 +4,18 @@ import { bindActionCreators } from "redux";
 import { deleteContact, setCurrent } from "../redux/actions";
 
 const ContactItem = ({ contact, deleteContact, current, setCurrent }) => {
-  const { id, name, email, phone, type } = contact;
+  const { _id, name, email, phone, type } = contact;
 
   const onEdit = () => {
-    setCurrent(id);
+    setCurrent(_id);
   };
 
   const onDelete = () => {
-    if (current === id) {
+    if (current === _id) {
       alert('The current contact is being edited, you can not delete it now!');
       return;
     }
-    deleteContact(id);
+    deleteContact(_id);
   };
 
   return (

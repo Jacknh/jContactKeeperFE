@@ -10,7 +10,7 @@ export const getCurrentContact = state => {
     }
   }
 
-  return contacts.find(contact => contact.id === current)
+  return contacts.find(contact => contact._id === current)
 }
 
 export const getFilteredContacts = state => {

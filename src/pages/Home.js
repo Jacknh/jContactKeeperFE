@@ -13,7 +13,7 @@ function Home({getMe, user}) {
   }, [])
 
   if (!user) {
-    return <p>Please login or register first!</p>
+    return <p style={{textAlign: 'center'}}>Please login or register first!</p>
   }
   return (
     <div className="grid-2">

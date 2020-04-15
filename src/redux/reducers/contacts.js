@@ -1,30 +1,7 @@
-import {v4 as uuidv4} from 'uuid'
 import { SET_CONTACTS, ADD_CONTACT, DELETE_CONTACT, SET_CURRENT, UPDATE_CONTACT, SET_FILTER } from "../actionTypes";
 
 const initialState = {
-  contacts: [
-    {
-      id: 1,
-      name: "Jack Zhang",
-      email: "jack@gmail.com",
-      phone: "123-234-2223",
-      type: "personal"
-    },
-    {
-      id: 2,
-      name: "Caleb Merritte",
-      email: "caleb@gmail.com",
-      phone: "345-666-2223",
-      type: "personal"
-    },
-    {
-      id: 3,
-      name: "Alex Yuan",
-      email: "alex@gmail.com",
-      phone: "094-234-2334",
-      type: "professional"
-    }
-  ],
+  contacts: [],
   current: null,
   filter: null
 };
@@ -42,14 +19,14 @@ export default function(state = initialState, action) {
         ...state,
         contacts: [
           ...state.contacts,
-          {...action.payload, id: uuidv4()}
+          {...action.payload}
         ]
       }
     
     case DELETE_CONTACT:
       return {
         ...state,
-        contacts: state.contacts.filter(contact => contact.id !== action.payload)
+        contacts: state.contacts.filter(contact => contact._id !== action.payload)
       }
 
     case SET_CURRENT: 
@@ -61,7 +38,7 @@ export default function(state = initialState, action) {
     case UPDATE_CONTACT:
       return {
         ...state,
-        contacts: state.contacts.map(contact => contact.id === action.payload.id ? action.payload : contact)
+        contacts: state.contacts.map(contact => contact._id === action.payload._id ? action.payload : contact)
       }
 
     case SET_FILTER:

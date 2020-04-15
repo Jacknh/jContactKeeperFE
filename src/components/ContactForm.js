@@ -31,7 +31,7 @@ const ContactForm = ({ addContact, current, currentContact, updateContact, setCu
   const onSubmit = (e) => {
     e.preventDefault();
     if (current) {
-      updateContact(contact);
+      updateContact(current, contact);
     } else {
       addContact(contact);
     }

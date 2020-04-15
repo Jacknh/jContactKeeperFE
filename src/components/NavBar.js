@@ -15,6 +15,7 @@ function NavBar({user, logout}) {
       <h1>
         <i className="fas fa-id-card-alt" /> Contact Keeper
       </h1>
+      {user && `Hello ${user.name}`}
       <ul>
         {user ? (
           <Fragment>
