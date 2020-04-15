@@ -2,7 +2,7 @@ import {SET_TOKEN, SET_USER} from '../actionTypes'
 
 const initialState = {
   token: null,
-  user: {}
+  user: null
 }
 
 export default function(state = initialState, action) {

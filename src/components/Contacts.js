@@ -13,7 +13,7 @@ const Contacts = ({ contacts, setFilter }) => {
         placeholder="Filter Contacts"
         onChange={(e) => setFilter(e.target.value)}
       />
-      <div style={{ overflowY: "auto", height: "80vh" }}>
+      <div style={{ overflowY: "auto", height: "75vh" }}>
         {contacts.map((contact) => {
           return <ContactItem contact={contact} key={contact.id} />;
         })}

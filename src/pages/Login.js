@@ -1,16 +1,31 @@
-import React, {useState} from 'react'
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import {useHistory} from 'react-router-dom'
+import { bindActionCreators } from "redux";
+import { login, setNotification } from "../redux/actions";
 
-const Login = () => {
-  const [user, setUser] = useState({email: '', password: ''});
+const Login = ({ login, setNotification }) => {
+  let history = useHistory();
+  const [user, setUser] = useState({ email: "", password: "" });
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    console.log(user)
-  }
+    try {
+      await login({ ...user });
+      await setNotification({
+        msg: "Login succeeded! Automatically go to home page in a second...",
+        type: "success",
+      });
+      history.push('/');
+      
+    } catch (error) {
+      setNotification({ msg: "Login failed", type: "danger" });
+    }
+  };
 
-  const onChange = e => setUser({...user, [e.target.name]: e.target.value})
+  const onChange = (e) => setUser({ ...user, [e.target.name]: e.target.value });
 
-  const {email, password} = user;
+  const { email, password } = user;
 
   return (
     <div className="form-container">
@@ -37,17 +52,21 @@ const Login = () => {
             name="password"
             value={password}
             onChange={onChange}
+            minLength="6"
             required
           />
         </div>
         <input
           type="submit"
-          value="Register"
+          value="Login"
           className="btn btn-primary btn-block"
         />
       </form>
     </div>
   );
-}
+};
 
-export default Login
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators({ login, setNotification }, dispatch);
+
+export default connect(null, mapDispatchToProps)(Login);

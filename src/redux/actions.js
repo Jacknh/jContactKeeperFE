@@ -33,8 +33,12 @@ export const setNotification = ({ msg, type }) => (dispatch) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       dispatch({ type: DELETE_NOTIFICATION, payload: id });
-      resolve(true);
-    }, 3000);
+      if (type === "success") {
+        resolve(true);
+      } else {
+        reject(false);
+      }
+    }, 800);
   });
 };
 
@@ -52,13 +56,35 @@ export const register = (payload) => (dispatch) =>
       return Promise.reject(false);
     });
 
+export const login = (payload) => (dispatch) =>
+  authService
+    .login(payload)
+    .then(({ data }) => {
+      dispatch(setToken(data.token));
+      localStorage.setItem("token", data.token);
+      return Promise.resolve(true);
+    })
+    .catch((err) => {
+      dispatch(setToken(null));
+      localStorage.removeItem("token");
+      return Promise.reject(false);
+    });
+
 export const getMe = () => (dispatch) =>
   authService
     .getMe()
-    .then(({data}) => {
+    .then(({ data }) => {
       dispatch(setUser(data.user));
+      return Promise.resolve(true);
     })
     .catch((error) => {
       console.log(error.response);
       dispatch(setUser(null));
+      return Promise.reject(false);
     });
+
+export const logout = () => (dispatch) => {
+  dispatch(setToken(null));
+  dispatch(setUser(null));
+  localStorage.removeItem("token");
+};

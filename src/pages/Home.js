@@ -5,14 +5,16 @@ import {getMe} from '../redux/actions'
 import Contacts from "../components/Contacts";
 import ContactForm from '../components/ContactForm'
 
-function Home({getMe}) {
+function Home({getMe, user}) {
 
   useEffect(() => {
     getMe();
-
     //eslint-disable-next-line
   }, [])
 
+  if (!user) {
+    return <p>Please login or register first!</p>
+  }
   return (
     <div className="grid-2">
       <div>
@@ -25,6 +27,12 @@ function Home({getMe}) {
   );
 }
 
+const mapStateToProps = (state) => {
+  return {
+    user: state.auth.user,
+  };
+};
+
 const mapDispatchToProps = dispatch => bindActionCreators({getMe}, dispatch)
 
-export default connect(null, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
