@@ -10,7 +10,7 @@ export const UPDATE_CONTACT = 'UPDATE_CONTACT';
 
 export const SET_FILTER = 'SET_FILTER';
 
-export const SET_TOKEN = 'SET_TOKEN';
+export const SET_AUTH = "SET_AUTH";
 
 export const SET_USER = 'SET_USER';
 

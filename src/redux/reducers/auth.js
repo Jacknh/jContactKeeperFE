@@ -1,17 +1,19 @@
-import {SET_TOKEN, SET_USER, SET_LOADING} from '../actionTypes'
+import { SET_AUTH, SET_USER, SET_LOADING } from "../actionTypes";
+
+const token = localStorage.getItem('token');
 
 const initialState = {
-  token: null,
+  isAuthenticated: !!token,
   user: null,
-  loading: true
-}
+  loading: true,
+};
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case SET_TOKEN:
+    case SET_AUTH:
       return {
         ...state,
-        token: action.payload,
+        isAuthenticated: action.payload,
       };
     case SET_USER:
       return {

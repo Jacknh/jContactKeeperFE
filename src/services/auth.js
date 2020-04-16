@@ -8,5 +8,7 @@ export const login = async (payload) =>
 
 export const getMe = async () =>
   await axios.get("/auth/getMe", {
-    headers: { authorization: `Bearer ${localStorage.getItem("token")}` },
+    headers: {
+      authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
   });

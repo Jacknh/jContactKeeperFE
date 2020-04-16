@@ -1,14 +1,18 @@
-import React, {Fragment} from 'react'
+import React, {Fragment, useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import {logout} from '../redux/actions'
+import {logout, getMe} from '../redux/actions'
 
-function NavBar({user, logout}) {
+function NavBar({ isAuthenticated, user, logout, getMe }) {
+  useEffect(() => {
+    isAuthenticated && getMe();
+    //eslint-disable-next-line
+  }, [isAuthenticated]);
 
   const onLogout = () => {
     logout();
-  }
+  };
 
   return (
     <div className="navbar bg-primary">
@@ -49,11 +53,12 @@ function NavBar({user, logout}) {
 
 const mapStateToProps = state => {
   return {
-    user: state.auth.user
-  }
+    user: state.auth.user,
+    isAuthenticated: state.auth.isAuthenticated,
+  };
 }
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ logout }, dispatch);
+  bindActionCreators({ logout, getMe }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

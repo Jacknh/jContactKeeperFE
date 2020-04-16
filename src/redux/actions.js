@@ -6,7 +6,7 @@ import {
   SET_CURRENT,
   UPDATE_CONTACT,
   SET_FILTER,
-  SET_TOKEN,
+  SET_AUTH,
   SET_USER,
   ADD_NOTIFICATION,
   DELETE_NOTIFICATION,
@@ -41,8 +41,6 @@ export const updateContact = (id, payload) => (dispatch) =>
 
 export const setFilter = (payload) => ({ type: SET_FILTER, payload });
 
-export const setToken = (payload) => ({ type: SET_TOKEN, payload });
-
 export const setUser = (payload) => ({ type: SET_USER, payload });
 
 export const setNotification = ({ msg, type }) => (dispatch) => {
@@ -65,12 +63,12 @@ export const register = (payload) => (dispatch) =>
   authService
     .register(payload)
     .then(({ data }) => {
-      dispatch(setToken(data.token));
+      dispatch({ type: SET_AUTH, payload: true });
       localStorage.setItem("token", data.token);
       return Promise.resolve(true);
     })
     .catch((err) => {
-      dispatch(setToken(null));
+      dispatch({ type: SET_AUTH, payload: false });
       localStorage.removeItem("token");
       return Promise.reject(false);
     });
@@ -79,12 +77,12 @@ export const login = (payload) => (dispatch) =>
   authService
     .login(payload)
     .then(({ data }) => {
-      dispatch(setToken(data.token));
+      dispatch({ type: SET_AUTH, payload: true });
       localStorage.setItem("token", data.token);
       return Promise.resolve(true);
     })
     .catch((err) => {
-      dispatch(setToken(null));
+      dispatch({ type: SET_AUTH, payload: false });
       localStorage.removeItem("token");
       return Promise.reject(false);
     });
@@ -103,8 +101,8 @@ export const getMe = () => (dispatch) =>
     });
 
 export const logout = () => (dispatch) => {
-  dispatch(setToken(null));
   dispatch(setUser(null));
+  dispatch({ type: SET_AUTH, payload: false });
   dispatch({ type: SET_CONTACTS, payload: [] });
   dispatch({ type: SET_LOADING, payload: true });
   localStorage.removeItem("token");
